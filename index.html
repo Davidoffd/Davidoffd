@@ -31,10 +31,20 @@
 
     <h1>Moja strona 🚀</h1>
     <p>Udało się! Strona działa w internecie 😎</p>
-
+<img src="https://picsum.photos/300" alt="losowy obrazek">
     <button onclick="alert('Działa! 🔥')">
         Kliknij mnie
-    </button>
+   <button onclick="zmienTekst()">
+    Kliknij mnie
+</button>
+
+<p id="tekst"></p>
+
+<script>
+function zmienTekst() {
+    document.getElementById("tekst").innerHTML = "Kliknięto! 🔥";
+}
+</script>
 
 </body>
 </html>
