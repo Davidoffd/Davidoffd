@@ -32,7 +32,6 @@
 <div class="box" id="menu">
     <h1>Wybierz test</h1>
     <button onclick="startTest(0)">Test 0</button>
-    <button onclick="startTest(1)">Test 1</button>
 </div>
 
 <div class="box" id="quiz" style="display:none;">
@@ -52,8 +51,9 @@
 
 <script>
 
+// 🔥 TWOJE PYTANIA (z generatora)
 let testy = [
-    [
+[
   {
     "pytanie": "W jakich strefach członkowie załóg nieposiadający ważnych kart identyfikacyjnych są zwolnieni z eskortowania:",
     "odpowiedzi": [
@@ -62,25 +62,9 @@ let testy = [
       "w strefach nieprzeznaczonych dla załóg;",
       "w strefach położonych w bezpośrednim sąsiedztwie statku powietrznego."
     ],
-    "poprawne": [
-      0,
-      3
-    ]
+    "poprawne": [0,3]
   }
-],
-        {
-            pytanie: "Kolory:",
-            odpowiedzi: ["Pies", "Czerwony", "Niebieski"],
-            poprawne: [1,2]
-        }
-    ],
-    [
-        {
-            pytanie: "Stolice:",
-            odpowiedzi: ["Warszawa", "Berlin", "Kot"],
-            poprawne: [0,1]
-        }
-    ]
+]
 ];
 
 let aktualnyTest = 0;
@@ -106,10 +90,11 @@ function startTest(nr) {
 function pokazPytanie() {
     let p = testy[aktualnyTest][aktualne];
 
-    document.getElementById("licznik").innerText =
-    "Pytanie " + (aktualne + 1) + " / " + testy[aktualnyTest].length;
-
     document.getElementById("tytul").innerText = "Test " + aktualnyTest;
+
+    document.getElementById("licznik").innerText =
+        "Pytanie " + (aktualne + 1) + " / " + testy[aktualnyTest].length;
+
     document.getElementById("pytanie").innerText = p.pytanie;
 
     let html = "";
