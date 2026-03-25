@@ -13,7 +13,7 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            max-width: 600px;
+            max-width: 700px;
             margin: 30px auto;
         }
 
@@ -21,6 +21,14 @@
             padding: 10px;
             margin: 5px;
             cursor: pointer;
+        }
+
+        .good {
+            color: green;
+        }
+
+        .bad {
+            color: red;
         }
     </style>
 </head>
@@ -30,61 +38,57 @@
     <h1>Wybierz test</h1>
     <button onclick="startTest(0)">Test 0</button>
     <button onclick="startTest(1)">Test 1</button>
-    <button onclick="startTest(2)">Test 2</button>
 </div>
 
 <div class="box" id="quiz" style="display:none;">
     <h2 id="tytul"></h2>
     <p id="pytanie"></p>
     <div id="odpowiedzi"></div>
-    <button onclick="sprawdz()">Dalej</button>
-    <p id="wynik"></p>
+
+    <button onclick="sprawdz()" id="btnSprawdz">Sprawdź</button>
+    <button onclick="dalej()" id="btnDalej" style="display:none;">Dalej</button>
+
+    <p id="info"></p>
 </div>
 
 <script>
 
-// 🔥 BAZA TESTÓW
+// 🔥 TESTY
 let testy = [
     [
         {
-            pytanie: "2 + 2 = ?",
-            odpowiedzi: ["3", "4", "5"],
-            poprawna: 1
+            pytanie: "Które są liczbami parzystymi?",
+            odpowiedzi: ["2", "3", "4", "5"],
+            poprawne: [0, 2]
         },
         {
-            pytanie: "3 + 3 = ?",
-            odpowiedzi: ["5", "6", "7"],
-            poprawna: 1
+            pytanie: "Które to kolory?",
+            odpowiedzi: ["Pies", "Czerwony", "Niebieski"],
+            poprawne: [1, 2]
         }
     ],
     [
         {
-            pytanie: "Stolica Polski?",
-            odpowiedzi: ["Warszawa", "Berlin", "Paryż"],
-            poprawna: 0
-        }
-    ],
-    [
-        {
-            pytanie: "Kolor nieba?",
-            odpowiedzi: ["Zielony", "Niebieski", "Czerwony"],
-            poprawna: 1
+            pytanie: "Stolice państw:",
+            odpowiedzi: ["Warszawa", "Berlin", "Kot"],
+            poprawne: [0, 1]
         }
     ]
 ];
 
-let aktualne = 0;
 let aktualnyTest = 0;
-let punkty = 0;
+let aktualne = 0;
+let dobre = 0;
+let zle = 0;
 
 function startTest(nr) {
     aktualnyTest = nr;
     aktualne = 0;
-    punkty = 0;
+    dobre = 0;
+    zle = 0;
 
     document.getElementById("menu").style.display = "none";
     document.getElementById("quiz").style.display = "block";
-
     document.getElementById("tytul").innerText = "Test " + nr;
 
     pokazPytanie();
@@ -97,34 +101,69 @@ function pokazPytanie() {
 
     let html = "";
     p.odpowiedzi.forEach((odp, i) => {
-        html += `<label><input type="radio" name="odp" value="${i}"> ${odp}</label><br>`;
+        html += `<label id="odp${i}">
+            <input type="checkbox" value="${i}"> ${odp}
+        </label><br>`;
     });
 
     document.getElementById("odpowiedzi").innerHTML = html;
+    document.getElementById("info").innerText = "";
+
+    document.getElementById("btnSprawdz").style.display = "inline";
+    document.getElementById("btnDalej").style.display = "none";
 }
 
 function sprawdz() {
-    let wybrana = document.querySelector('input[name="odp"]:checked');
-
-    if (!wybrana) {
-        alert("Wybierz odpowiedź!");
-        return;
-    }
-
     let p = testy[aktualnyTest][aktualne];
+    let zaznaczone = document.querySelectorAll('input[type="checkbox"]:checked');
 
-    if (parseInt(wybrana.value) === p.poprawna) {
-        punkty++;
+    let wybrane = [];
+    zaznaczone.forEach(el => wybrane.push(parseInt(el.value)));
+
+    let poprawne = p.poprawne;
+
+    let dobrze = JSON.stringify(wybrane.sort()) === JSON.stringify(poprawne.sort());
+
+    // kolorowanie
+    p.odpowiedzi.forEach((_, i) => {
+        let el = document.getElementById("odp" + i);
+
+        if (poprawne.includes(i)) {
+            el.classList.add("good");
+        }
+
+        if (wybrane.includes(i) && !poprawne.includes(i)) {
+            el.classList.add("bad");
+        }
+    });
+
+    if (dobrze) {
+        dobre++;
+        document.getElementById("info").innerText = "✅ Dobrze!";
+    } else {
+        zle++;
+        document.getElementById("info").innerText = "❌ Źle!";
     }
 
+    document.getElementById("btnSprawdz").style.display = "none";
+    document.getElementById("btnDalej").style.display = "inline";
+}
+
+function dalej() {
     aktualne++;
 
     if (aktualne < testy[aktualnyTest].length) {
         pokazPytanie();
     } else {
+        let suma = dobre + zle;
+        let procent = Math.round((dobre / suma) * 100);
+
         document.getElementById("pytanie").innerText = "Koniec testu!";
         document.getElementById("odpowiedzi").innerHTML = "";
-        document.getElementById("wynik").innerText = "Wynik: " + punkty;
+        document.getElementById("info").innerHTML =
+            `Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
+
+        document.getElementById("btnDalej").style.display = "none";
     }
 }
 
