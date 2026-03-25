@@ -37,6 +37,7 @@
 
 <div class="box" id="quiz" style="display:none;">
     <h2 id="tytul"></h2>
+    <p id="licznik"></p>
     <p id="pytanie"></p>
     <div id="odpowiedzi"></div>
 
@@ -95,6 +96,9 @@ function startTest(nr) {
 
 function pokazPytanie() {
     let p = testy[aktualnyTest][aktualne];
+
+    document.getElementById("licznik").innerText =
+    "Pytanie " + (aktualne + 1) + " / " + testy[aktualnyTest].length;
 
     document.getElementById("tytul").innerText = "Test " + aktualnyTest;
     document.getElementById("pytanie").innerText = p.pytanie;
