@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generator testów</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        textarea { width: 100%; height: 80px; }
+        input { margin: 5px; }
+        button { margin-top: 10px; padding: 10px; }
+        .box { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Generator pytań</h1>
+
+<div class="box">
+    <label>Pytanie:</label><br>
+    <textarea id="pytanie"></textarea>
+</div>
+
+<div class="box">
+    <label>Odpowiedzi:</label><br>
+    <div id="odpowiedzi"></div>
+    <button onclick="dodajOdp()">+ Dodaj odpowiedź</button>
+</div>
+
+<button onclick="zapisz()">Zapisz pytanie</button>
+
+<h2>Wynik (kopiuj):</h2>
+<textarea id="wynik"></textarea>
+
+<script>
+
+let licznik = 0;
+let wszystkie = [];
+
+function dodajOdp() {
+    let div = document.createElement("div");
+    div.innerHTML = `
+        <input type="checkbox" class="check">
+        <input type="text" class="odp" placeholder="Treść odpowiedzi">
+    `;
+    document.getElementById("odpowiedzi").appendChild(div);
+}
+
+function zapisz() {
+    let pytanie = document.getElementById("pytanie").value;
+
+    let odp = document.querySelectorAll(".odp");
+    let check = document.querySelectorAll(".check");
+
+    let odpowiedzi = [];
+    let poprawne = [];
+
+    odp.forEach((el, i) => {
+        odpowiedzi.push(el.value);
+        if (check[i].checked) {
+            poprawne.push(i);
+        }
+    });
+
+    let obiekt = {
+        pytanie: pytanie,
+        odpowiedzi: odpowiedzi,
+        poprawne: poprawne
+    };
+
+    wszystkie.push(obiekt);
+
+    document.getElementById("wynik").value =
+        JSON.stringify(wszystkie, null, 2);
+
+    // reset
+    document.getElementById("pytanie").value = "";
+    document.getElementById("odpowiedzi").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
