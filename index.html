@@ -1,199 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Testy</title>
-    <style>
-        body { font-family: Arial; background: #f0f0f0; text-align: center; }
-        .box { background: white; padding: 20px; border-radius: 10px; max-width: 800px; margin: 30px auto; }
-        button { padding: 10px; margin: 5px; cursor: pointer; }
-        .good { color: green; }
-        .bad { color: red; }
-    </style>
+<meta charset="UTF-8">
+<title>Testy</title>
+<style>
+body { font-family: Arial; background:#f0f0f0; text-align:center; }
+.box { background:white; padding:20px; border-radius:10px; max-width:800px; margin:30px auto; }
+button { padding:10px; margin:5px; cursor:pointer; }
+.good { color:green; }
+.bad { color:red; }
+</style>
 </head>
 <body>
 
 <div class="box" id="menu">
-    <h1>Wybierz test</h1>
-    <button onclick="startTest(0)">Test 0B</button>
-    <button onclick="startTest(1)">Test 6B</button>
+<h1>Wybierz test</h1>
+<button onclick="startTest(0)">Test 0B</button>
+<button onclick="startTest(1)">Test 6B</button>
 </div>
 
 <div class="box" id="quiz" style="display:none;">
-    <h2 id="tytul"></h2>
-    <p id="licznik"></p>
-    <p id="pytanie"></p>
-    <div id="odpowiedzi"></div>
+<h2 id="tytul"></h2>
+<p id="licznik"></p>
+<p id="pytanie"></p>
+<div id="odpowiedzi"></div>
 
-    <button onclick="sprawdz()" id="btnSprawdz">Sprawdź</button>
-    <button onclick="dalej()" id="btnDalej" style="display:none;">Dalej</button>
+<button onclick="sprawdz()" id="btnSprawdz">Sprawdź</button>
+<button onclick="dalej()" id="btnDalej" style="display:none;">Dalej</button>
+<button onclick="restartTest()" id="btnRestart" style="display:none;">Jeszcze raz</button>
+<button onclick="powrotMenu()" id="btnMenu" style="display:none;">Menu</button>
 
-    <button onclick="restartTest()" id="btnRestart" style="display:none;">Jeszcze raz</button>
-    <button onclick="powrotMenu()" id="btnMenu" style="display:none;">Menu</button>
-
-    <p id="info"></p>
+<p id="info"></p>
 </div>
 
 <script>
 
-// 🔥 TESTY
 let testy = [
 
 /* TEST 0B */
 [
-  {
-    pytanie: "Przykładowy test",
-    odpowiedzi: ["A","B","C"],
-    poprawne: [0]
-  }
+{
+pytanie: "Test działa poprawnie?",
+odpowiedzi: ["Tak","Nie"],
+poprawne: [0]
+}
 ],
 
-/* 🔥 TEST 6B (40/40) */
+/* TEST 6B (TU WSTAWIMY 40 PYTAŃ) */
 [
-  {
-    pytanie: "Do metod kontroli bezpieczeństwa materiałów i poczty przewoźnika lotniczego zaliczamy:",
-    odpowiedzi: [
-      "kontrolę manualną",
-      "systemy wykrywania materiałów wybuchowych",
-      "urządzenie do wykrywania śladowych ilości materiałów wybuchowych w połączeniu z ręcznym wykrywaczem metalu",
-      "kontrolę wzrokową",
-      "urządzenie do wykrywania śladowych ilości materiałów wybuchowych"
-    ],
-    poprawne: [0,1,4]
-  },
+{
+pytanie: "TEST ŁADOWANIA — jeśli to widzisz, działa",
+odpowiedzi: ["OK","NIE"],
+poprawne: [0]
+}
+]
 
-  {
-    pytanie: "Do metod kontroli bezpieczeństwa bagażu rejestrowanego zaliczamy:",
-    odpowiedzi: [
-      "kontrolę manualną",
-      "urządzenie ETD + wykrywacz metalu",
-      "systemy wykrywania materiałów wybuchowych",
-      "urządzenie rentgenowskie",
-      "urządzenie ETD"
-    ],
-    poprawne: [0,2,3,4]
-  },
-
-  {
-    pytanie: "Status ochrony przesyłki SHR oznacza:",
-    odpowiedzi: [
-      "promieniotwórczy transport",
-      "bezpieczny przewóz zgodny z wymaganiami wysokiego ryzyka",
-      "małe przesyłki",
-      "cargo only",
-      "pasażerski"
-    ],
-    poprawne: [1]
-  },
-
-  {
-    pytanie: "Przedmioty zabronione w bagażu kabinowym mogą być:",
-    odpowiedzi: [
-      "wniesione za opłatą",
-      "umieszczone w bagażu rejestrowanym",
-      "zniszczone",
-      "zatrzymane",
-      "przechowane"
-    ],
-    poprawne: [1,2,4]
-  },
-
-  {
-    pytanie: "Do kategorii przedmiotów zabronionych w bagażu rejestrowanym zaliczamy:",
-    odpowiedzi: [
-      "łomy",
-      "amunicję",
-      "urządzenia strzelające",
-      "repliki",
-      "substancje zapalające"
-    ],
-    poprawne: [0,1,4]
-  },
-
-  {
-    pytanie: "Status SPX oznacza:",
-    odpowiedzi: [
-      "bezpieczny przewóz",
-      "humanitarny",
-      "próbki",
-      "wysokie ryzyko",
-      "pasażerowie"
-    ],
-    poprawne: [0]
-  },
-
-  {
-    pytanie: "Do przedmiotów zabronionych w kabinie zaliczamy:",
-    odpowiedzi: [
-      "ostre przedmioty",
-      "broń",
-      "narzędzia",
-      "komputery",
-      "sprzęt walki"
-    ],
-    poprawne: [0,1,2,4]
-  },
-
-  {
-    pytanie: "Zwolnione z kontroli mogą być:",
-    odpowiedzi: [
-      "poczta rządowa",
-      "małe przesyłki",
-      "sprzęt wojskowy",
-      "duże przesyłki",
-      "poczta dyplomatyczna"
-    ],
-    poprawne: [0,1,4]
-  },
-
-  {
-    pytanie: "Do płynów zaliczamy:",
-    odpowiedzi: [
-      "syrop na kaszel",
-      "czekoladę",
-      "bitą śmietanę w sprayu",
-      "pastę do zębów",
-      "ketchup"
-    ],
-    poprawne: [0,2,3,4]
-  },
-
-  {
-    pytanie: "Powód wydania statusu RA oznacza:",
-    odpowiedzi: [
-      "wybrany przez nadawcę",
-      "od agenta",
-      "wybrany przez zarejestrowanego agenta",
-      "dostawca",
-      "znany agent"
-    ],
-    poprawne: [2]
-  },
-
-  {
-    pytanie: "Za nadzór nad bronią odpowiada:",
-    odpowiedzi: [
-      "Służba ochrony",
-      "Policja",
-      "Służba celna",
-      "Straż Graniczna",
-      "Przewoźnik"
-    ],
-    poprawne: [3]
-  },
-
-  {
-    pytanie: "Przedmioty zabronione dla osób niebędących pasażerami:",
-    odpowiedzi: [
-      "zabawka broń",
-      "plastikowe sztućce",
-      "płyny",
-      "kajdanki",
-      "gaz pieprzowy"
-    ],
-    poprawne: [0,3,4]
-  }
-
-  // 🔥 (reszta 40 pytań — już dopasowana do Twojej listy odpowiedzi)
 ];
 
 let aktualnyTest = 0;
@@ -201,103 +62,78 @@ let aktualne = 0;
 let dobre = 0;
 let zle = 0;
 
-function startTest(nr) {
-    aktualnyTest = nr;
-    aktualne = 0;
-    dobre = 0;
-    zle = 0;
+function startTest(nr){
+aktualnyTest=nr;
+aktualne=0;
+dobre=0;
+zle=0;
 
-    document.getElementById("menu").style.display = "none";
-    document.getElementById("quiz").style.display = "block";
+document.getElementById("menu").style.display="none";
+document.getElementById("quiz").style.display="block";
 
-    document.getElementById("btnRestart").style.display = "none";
-    document.getElementById("btnMenu").style.display = "none";
-
-    pokazPytanie();
+pokazPytanie();
 }
 
-function pokazPytanie() {
-    let p = testy[aktualnyTest][aktualne];
+function pokazPytanie(){
+let p=testy[aktualnyTest][aktualne];
 
-    document.getElementById("tytul").innerText = "Test " + (aktualnyTest === 0 ? "0B" : "6B");
+document.getElementById("tytul").innerText="Test "+(aktualnyTest==0?"0B":"6B");
+document.getElementById("licznik").innerText="Pytanie "+(aktualne+1)+" / "+testy[aktualnyTest].length;
+document.getElementById("pytanie").innerText=p.pytanie;
 
-    document.getElementById("licznik").innerText =
-        "Pytanie " + (aktualne + 1) + " / " + testy[aktualnyTest].length;
+let html="";
+p.odpowiedzi.forEach((o,i)=>{
+html+=`<label id="o${i}"><input type="checkbox" value="${i}"> ${o}</label><br>`;
+});
 
-    document.getElementById("pytanie").innerText = p.pytanie;
+document.getElementById("odpowiedzi").innerHTML=html;
+document.getElementById("info").innerText="";
 
-    let html = "";
-    p.odpowiedzi.forEach((odp, i) => {
-        html += `<label id="odp${i}">
-            <input type="checkbox" value="${i}"> ${odp}
-        </label><br>`;
-    });
-
-    document.getElementById("odpowiedzi").innerHTML = html;
-    document.getElementById("info").innerText = "";
-
-    document.getElementById("btnSprawdz").style.display = "inline";
-    document.getElementById("btnDalej").style.display = "none";
+document.getElementById("btnSprawdz").style.display="inline";
+document.getElementById("btnDalej").style.display="none";
 }
 
-function sprawdz() {
-    let p = testy[aktualnyTest][aktualne];
-    let zaznaczone = document.querySelectorAll('input[type="checkbox"]:checked');
+function sprawdz(){
+let p=testy[aktualnyTest][aktualne];
+let zazn=[...document.querySelectorAll("input:checked")].map(x=>parseInt(x.value));
 
-    let wybrane = [];
-    zaznaczone.forEach(el => wybrane.push(parseInt(el.value)));
+let dobrze=JSON.stringify(zazn.sort())===JSON.stringify(p.poprawne.sort());
 
-    let dobrze = JSON.stringify(wybrane.sort()) === JSON.stringify(p.poprawne.sort());
+p.odpowiedzi.forEach((_,i)=>{
+let el=document.getElementById("o"+i);
+if(p.poprawne.includes(i)) el.classList.add("good");
+if(zazn.includes(i)&&!p.poprawne.includes(i)) el.classList.add("bad");
+});
 
-    p.odpowiedzi.forEach((_, i) => {
-        let el = document.getElementById("odp" + i);
+if(dobrze){dobre++;info.innerText="✅ Dobrze";}
+else{zle++;info.innerText="❌ Źle";}
 
-        if (p.poprawne.includes(i)) el.classList.add("good");
-        if (wybrane.includes(i) && !p.poprawne.includes(i)) el.classList.add("bad");
-    });
-
-    if (dobrze) {
-        dobre++;
-        document.getElementById("info").innerText = "✅ Dobrze!";
-    } else {
-        zle++;
-        document.getElementById("info").innerText = "❌ Źle!";
-    }
-
-    document.getElementById("btnSprawdz").style.display = "none";
-    document.getElementById("btnDalej").style.display = "inline";
+btnSprawdz.style.display="none";
+btnDalej.style.display="inline";
 }
 
-function dalej() {
-    aktualne++;
+function dalej(){
+aktualne++;
 
-    if (aktualne < testy[aktualnyTest].length) {
-        pokazPytanie();
-    } else {
-        let suma = dobre + zle;
-        let procent = Math.round((dobre / suma) * 100);
+if(aktualne<testy[aktualnyTest].length){
+pokazPytanie();
+}else{
+let suma=dobre+zle;
+let procent=Math.round((dobre/suma)*100);
 
-        document.getElementById("pytanie").innerText = "Koniec testu!";
-        document.getElementById("odpowiedzi").innerHTML = "";
-        document.getElementById("info").innerHTML =
-            `Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
+pytanie.innerText="Koniec testu";
+odpowiedzi.innerHTML="";
+info.innerHTML=`Dobre: ${dobre}<br>Złe: ${zle}<br>${procent}%`;
 
-        document.getElementById("btnDalej").style.display = "none";
-        document.getElementById("btnRestart").style.display = "inline";
-        document.getElementById("btnMenu").style.display = "inline";
-    }
+btnDalej.style.display="none";
+btnRestart.style.display="inline";
+btnMenu.style.display="inline";
+}
 }
 
-function restartTest() {
-    startTest(aktualnyTest);
-}
-
-function powrotMenu() {
-    document.getElementById("quiz").style.display = "none";
-    document.getElementById("menu").style.display = "block";
-}
+function restartTest(){startTest(aktualnyTest);}
+function powrotMenu(){quiz.style.display="none";menu.style.display="block";}
 
 </script>
-
 </body>
 </html>
