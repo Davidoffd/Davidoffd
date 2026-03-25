@@ -6,47 +6,43 @@
 
 <style>
 body {
-    font-family: Arial;
-    background: #1e293b;
-    color: white;
-    text-align: center;
-    padding: 30px;
+  font-family: Arial;
+  background: #1e293b;
+  color: white;
+  padding: 20px;
 }
 
 button {
-    padding: 10px 20px;
-    margin: 10px;
-    cursor: pointer;
-}
-
-#quiz {
-    max-width: 800px;
-    margin: auto;
-    text-align: left;
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
 }
 
 label {
-    display: block;
-    margin: 5px 0;
+  display: block;
+  margin: 5px 0;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <h1>Test 6B</h1>
 
-<div id="quiz">
-    <h2 id="pytanie"></h2>
-    <div id="odpowiedzi"></div>
+<div id="pytanie"></div>
+<div id="odpowiedzi"></div>
 
-    <button onclick="sprawdz()">Sprawdź</button>
-    <button onclick="dalej()">Dalej</button>
+<br>
 
-    <div id="info"></div>
-</div>
+<button onclick="sprawdz()">Sprawdź</button>
+<button id="btnDalej" onclick="dalej()">Dalej</button>
+<button id="btnRestart" onclick="restart()" style="display:none;">Restart</button>
+<button id="btnMenu" onclick="menu()" style="display:none;">Menu</button>
+
+<div id="info"></div>
 
 <script>
+
 let aktualne = 0;
 let dobre = 0;
 let zle = 0;
@@ -98,146 +94,100 @@ odpowiedzi: [
 "przekazane w operatorowi kontroli bezpieczeństwa do przechowania;"
 ],
 poprawne: [1,2]
-},
-
-{
-pytanie: "Do kategorii przedmiotów zabronionych do przewozu w bagażu rejestrowanym zaliczamy:",
-odpowiedzi: [
-"lonty;",
-"amunicję;",
-"urządzenia wystrzeliwujące pociski;",
-"repliki broni palnej;",
-"substancje zapalające;"
-],
-poprawne: [0,1,4]
-},
-
-{
-pytanie: "Status ochrony przesyłki „SPX” oznacza:",
-odpowiedzi: [
-"przewóz bezpieczny tylko dla pasażerskiego, towarowego i pocztowego statku powietrznego;",
-"przewóz przesyłek zawierających pomoc humanitarną;",
-"przewóz próbek biomedycznych przewożonych na specjalnych warunkach;",
-"przewóz bezpieczny dla pasażerskiego, towarowego i pocztowego statku powietrznego zgodnie z wymaganiami wysokiego ryzyka;",
-"przewóz pasażerów potencjalnie uciążliwych;"
-],
-poprawne: [0]
-},
-
-{
-pytanie: "Do kategorii przedmiotów zabronionych do przewozu w materiałach i poczcie przewoźnika lotniczego zaliczamy:",
-odpowiedzi: [
-"przedmioty z ostrym zakończeniem i ostrą krawędzią;",
-"urządzenia wystrzeliwujące pociski;",
-"narzędzia robocze;",
-"komputery;",
-"wyposażenie służące do sztuk walki;"
-],
-poprawne: [0,1,2,4]
-},
-
-{
-pytanie: "Zwolnieniem z kontroli bezpieczeństwa może podlegać:",
-odpowiedzi: [
-"rządowa poczta w przypadku, gdy ochronę i zabezpieczenie zapewnia dane państwo członkowskie oraz została przeprowadzona ocena ryzyka przez właściwy organ;",
-"przesyłki łączone składające się wyłącznie z przesyłek, gdy grubość każdej z nich jest mniejsza niż 6 mm, a całkowity ciężar jest mniejszy niż 250g;",
-"sprzęt militarny;",
-"przesyłka o grubości mniejszej niż 6 cm;",
-"poczta dyplomatyczna;"
-],
-poprawne: [0,1,4]
-},
-
-{
-pytanie: "Do płynów, aerozoli i żeli zaliczamy:",
-odpowiedzi: [
-"syrop na kaszel;",
-"tabliczkę czekolady;",
-"bitą śmietanę w sprayu;",
-"pastę do zębów w tubce;",
-"ketchup;"
-],
-poprawne: [0,2,3,4]
-},
-
-{
-pytanie: "Powód wydania statusu ochrony „RA” oznacza:",
-odpowiedzi: [
-"wybrany przez zarejestrowanego nadawcę;",
-"otrzymany od zarejestrowanego agenta;",
-"wybrany przez zarejestrowanego agenta;",
-"wybrany przez zarejestrowanego dostawcę zaopatrzenia portu lotniczego;",
-"wybrany przez znanego agenta;"
-],
-poprawne: [2]
 }
 
 ];
 
-function pokazPytanie() {
-    let p = test[aktualne];
+function pokaz() {
+  let p = test[aktualne];
 
-    document.getElementById("pytanie").innerText = p.pytanie;
+  document.getElementById("pytanie").innerText =
+    "Pytanie " + (aktualne + 1) + " / " + test.length + ": " + p.pytanie;
 
-    let html = "";
-    p.odpowiedzi.forEach((odp, i) => {
-        html += `<label>
-        <input type="checkbox" value="${i}"> ${odp}
-        </label>`;
-    });
+  let html = "";
 
-    document.getElementById("odpowiedzi").innerHTML = html;
-    document.getElementById("info").innerHTML = "";
+  p.odpowiedzi.forEach((odp, i) => {
+    html += `<label><input type="checkbox" value="${i}"> ${odp}</label>`;
+  });
+
+  document.getElementById("odpowiedzi").innerHTML = html;
+  document.getElementById("info").innerText = "";
 }
 
 function sprawdz() {
   let zaznaczone = [];
+
   document.querySelectorAll("input[type=checkbox]").forEach((el, i) => {
     if (el.checked) zaznaczone.push(i);
   });
 
-  let poprawneOdp = test[aktualne].poprawne;
+  let poprawne = test[aktualne].poprawne;
 
-  let dobrze =
-    zaznaczone.length === poprawneOdp.length &&
-    zaznaczone.every(v => poprawneOdp.includes(v));
+  let dobrzeOdp =
+    zaznaczone.length === poprawne.length &&
+    zaznaczone.every(v => poprawne.includes(v));
 
-  let info = document.getElementById("info");
-
-  if (dobrze) {
-    info.innerText = "✅ Dobrze";
+  if (dobrzeOdp) {
+    dobre++;
+    document.getElementById("info").innerText = "✅ Dobrze";
   } else {
-    info.innerText = "❌ Źle";
+    zle++;
+    document.getElementById("info").innerText = "❌ Źle";
 
-    // 🔥 POKAŻ POPRAWNE ODPOWIEDZI
-    document.querySelectorAll("input[type=checkbox]").forEach((el, i) => {
-      if (poprawneOdp.includes(i)) {
-        el.parentElement.style.color = "lightgreen";
+    document.querySelectorAll("label").forEach((el, i) => {
+      if (poprawne.includes(i)) {
+        el.style.color = "lightgreen";
       } else {
-        el.parentElement.style.color = "red";
+        el.style.color = "red";
       }
     });
   }
 }
 
 function dalej() {
-    aktualne++;
+  aktualne++;
 
-    if (aktualne >= test.length) {
-        let suma = dobre + zle;
-        let procent = Math.round((dobre / suma) * 100);
+  if (aktualne >= test.length) {
+    koniec();
+    return;
+  }
 
-        document.getElementById("pytanie").innerText = "Koniec testu";
-        document.getElementById("odpowiedzi").innerHTML = "";
-        document.getElementById("info").innerHTML =
-            `Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
-        return;
-    }
-
-    pokazPytanie();
+  pokaz();
 }
 
-pokazPytanie();
+function koniec() {
+  let suma = dobre + zle;
+  let procent = suma > 0 ? Math.round((dobre / suma) * 100) : 0;
+
+  document.getElementById("pytanie").innerText = "Koniec testu";
+  document.getElementById("odpowiedzi").innerHTML = "";
+
+  document.getElementById("info").innerHTML =
+    `Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
+
+  document.getElementById("btnDalej").style.display = "none";
+  document.getElementById("btnRestart").style.display = "inline-block";
+  document.getElementById("btnMenu").style.display = "inline-block";
+}
+
+function restart() {
+  aktualne = 0;
+  dobre = 0;
+  zle = 0;
+
+  document.getElementById("btnRestart").style.display = "none";
+  document.getElementById("btnMenu").style.display = "none";
+  document.getElementById("btnDalej").style.display = "inline-block";
+
+  pokaz();
+}
+
+function menu() {
+  location.reload();
+}
+
+pokaz();
+
 </script>
 
 </body>
