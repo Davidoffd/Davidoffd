@@ -21,12 +21,8 @@ label {
     margin: 6px;
     text-align: left;
 }
-.correct {
-    color: lightgreen;
-}
-.wrong {
-    color: red;
-}
+.correct { color: lightgreen; }
+.wrong { color: red; }
 button {
     padding: 10px 20px;
     margin: 10px;
@@ -38,7 +34,12 @@ button {
 
 <body>
 
-<div class="box">
+<div class="box" id="menu">
+<h1>Testy</h1>
+<button onclick="start()">Start Test 6B (1–10)</button>
+</div>
+
+<div class="box" id="testBox" style="display:none;">
 
 <h1>Test 6B</h1>
 <p id="licznik"></p>
@@ -48,10 +49,15 @@ button {
 
 <button onclick="sprawdz()">Sprawdź</button>
 <button id="btnDalej" onclick="dalej()" style="display:none;">Dalej</button>
-<button id="btnRestart" onclick="restart()" style="display:none;">Restart</button>
 
 <p id="info"></p>
 
+</div>
+
+<div class="box" id="koniec" style="display:none;">
+<h2>Koniec testu</h2>
+<p id="wynik"></p>
+<button onclick="menuBack()">Powrót do menu</button>
 </div>
 
 <script>
@@ -80,81 +86,153 @@ odpowiedzi: [
 "urządzenie do wykrywania śladowych ilości materiałów wybuchowych."
 ],
 poprawne: [0,2,3,4]
+},
+
+{
+pytanie: "Status ochrony przesyłki „SHR” oznacza:",
+odpowiedzi: [
+"przewóz substancji promieniotwórczych o niskiej aktywności właściwej;",
+"przewóz bezpieczny dla pasażerskiego, towarowego i pocztowego statku powietrznego zgodnie z wymaganiami wysokiego ryzyka;",
+"przewóz przesyłek pocztowych o grubości do 6 mm i wadze nieprzekraczającej 250 g zwolnionych z kontroli bezpieczeństwa;",
+"przewóz bezpieczny tylko dla towarowego i pocztowego statku powietrznego;",
+"przewóz bezpieczny tylko dla pasażerskiego i pocztowego statku powietrznego zgodnie z wymaganiami wysokiego ryzyka."
+],
+poprawne: [1]
+},
+
+{
+pytanie: "Przedmioty zabronione do przewozu w bagażu kabinowym, o ile nie jest on zabroniony w bagażu rejestrowanym, zgodnie z KPOLC mogą być:",
+odpowiedzi: [
+"wniesione na pokład samolotu po dokonaniu dodatkowej opłaty zgodnie z cennikiem przewoźnika lotniczego;",
+"umieszczone w bagażu rejestrowanym podczas odprawy biletowo – bagażowej;",
+"usunięte z bagażu kabinowego, a następnie umieszczone w specjalnie do tego celu przeznaczonym pojemniku i zniszczone na koszt przewoźnika lotniczego lub zarządzającego lotniskiem;",
+"przekazane w operatorowi kontroli bezpieczeństwa do przechowania;",
+"przechowane na lotnisku za opłatą, w przeznaczonym do tego celu pomieszczeniu, do czasu zgłoszenia się po ich odbiór pasażera."
+],
+poprawne: [1,2,4]
+},
+
+{
+pytanie: "Do kategorii przedmiotów zabronionych do przewozu w bagażu rejestrowanym zaliczamy:",
+odpowiedzi: [
+"łomy;",
+"amunicję;",
+"urządzenia wystrzeliwujące pociski;",
+"repliki broni palnej;",
+"substancje zapalające."
+],
+poprawne: [0,1,4]
+},
+
+{
+pytanie: "Status ochrony przesyłki „SPX” oznacza:",
+odpowiedzi: [
+"przewóz bezpieczny tylko dla pasażerskiego, towarowego i pocztowego statku powietrznego;",
+"przewóz przesyłek zawierających pomoc humanitarną;",
+"przewóz próbek biomedycznych przewożonych na specjalnych warunkach;",
+"przewóz bezpieczny dla pasażerskiego, towarowego i pocztowego statku powietrznego zgodnie z wymaganiami wysokiego ryzyka;",
+"przewóz pasażerów potencjalnie uciążliwych."
+],
+poprawne: [0]
+},
+
+{
+pytanie: "Do kategorii przedmiotów zabronionych do przewozu w materiałach i poczcie przewoźnika lotniczego, które będą załadowane do jakiejkolwiek części pasażerskiego statku powietrznego innej niż luk bagażowy, zaliczamy:",
+odpowiedzi: [
+"przedmioty z ostrym zakończeniem i ostrą krawędzią;",
+"urządzenia wystrzeliwujące pociski;",
+"narzędzia robocze;",
+"komputery;",
+"wyposażenie służące do sztuk walki."
+],
+poprawne: [0,1,2,4]
+},
+
+{
+pytanie: "Zwolnieniem z kontroli bezpieczeństwa może podlegać:",
+odpowiedzi: [
+"rządowa poczta w przypadku, gdy ochronę i zabezpieczenie zapewnia dane państwo członkowskie oraz została przeprowadzona ocena ryzyka przez właściwy organ;",
+"przesyłki łączone składające się wyłącznie z przesyłek, gdy grubość każdej z nich jest mniejsza niż 6 mm, a całkowity ciężar jest mniejszy niż 250 g;",
+"sprzęt militarny;",
+"przesyłka o grubości mniejsza niż 6 cm;",
+"poczta dyplomatyczna."
+],
+poprawne: [0,1,4]
+},
+
+{
+pytanie: "Do płynów, aerozoli i żeli zaliczamy:",
+odpowiedzi: [
+"syrop na kaszel;",
+"tabliczkę czekolady;",
+"bitą śmietanę w sprayu;",
+"pastę do zębów w tubce;",
+"ketchup."
+],
+poprawne: [0,2,3,4]
 }
 
 ];
 
-let aktualne = 0;
-let dobre = 0;
-let zle = 0;
+let aktualne=0, dobre=0, zle=0;
 
-function pokaz() {
-    let p = test[aktualne];
+function start(){
+menu.style.display="none";
+testBox.style.display="block";
+pokaz();
+}
 
-    licznik.innerText = "Pytanie " + (aktualne+1) + " / " + test.length;
-    pytanie.innerText = p.pytanie;
+function pokaz(){
+let p=test[aktualne];
+licznik.innerText="Pytanie "+(aktualne+1)+" / "+test.length;
+pytanie.innerText=p.pytanie;
 
-    let html = "";
-    p.odpowiedzi.forEach((odp,i)=>{
-        html += `<label id="odp${i}"><input type="checkbox" value="${i}"> ${odp}</label>`;
-    });
+let html="";
+p.odpowiedzi.forEach((o,i)=>{
+html+=`<label id="l${i}"><input type="checkbox" value="${i}"> ${o}</label>`;
+});
+odpowiedzi.innerHTML=html;
 
-    odpowiedzi.innerHTML = html;
-    info.innerText = "";
-    btnDalej.style.display = "none";
+btnDalej.style.display="none";
+info.innerText="";
 }
 
 function sprawdz(){
-    let zaz = [...document.querySelectorAll("input:checked")].map(e=>Number(e.value));
-    let pop = test[aktualne].poprawne;
+let zaz=[...document.querySelectorAll("input:checked")].map(e=>+e.value);
+let pop=test[aktualne].poprawne;
 
-    document.querySelectorAll("label").forEach((el,i)=>{
-        if(pop.includes(i)){
-            el.classList.add("correct");
-        } else if(zaz.includes(i)){
-            el.classList.add("wrong");
-        }
-    });
+document.querySelectorAll("label").forEach((el,i)=>{
+if(pop.includes(i)) el.classList.add("correct");
+else if(zaz.includes(i)) el.classList.add("wrong");
+});
 
-    let ok = zaz.length===pop.length && zaz.every(v=>pop.includes(v));
+if(zaz.length===pop.length && zaz.every(v=>pop.includes(v))){
+dobre++; info.innerText="✅";
+}else{
+zle++; info.innerText="❌";
+}
 
-    if(ok){
-        dobre++;
-        info.innerText="✅ Dobrze";
-    }else{
-        zle++;
-        info.innerText="❌ Źle";
-    }
-
-    btnDalej.style.display="inline";
+btnDalej.style.display="inline";
 }
 
 function dalej(){
-    aktualne++;
-    if(aktualne<test.length){
-        pokaz();
-    }else{
-        koniec();
-    }
+aktualne++;
+if(aktualne<test.length) pokaz();
+else koniecTestu();
 }
 
-function koniec(){
-    let suma=dobre+zle;
-    let procent=Math.round((dobre/suma)*100);
+function koniecTestu(){
+testBox.style.display="none";
+koniec.style.display="block";
 
-    pytanie.innerText="Koniec testu";
-    odpowiedzi.innerHTML="";
-    info.innerHTML=`Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
-
-    btnDalej.style.display="none";
-    btnRestart.style.display="inline";
+let suma=dobre+zle;
+let procent=Math.round((dobre/suma)*100);
+wynik.innerHTML=`Wynik: ${procent}%<br>Dobre: ${dobre}<br>Złe: ${zle}`;
 }
 
-function restart(){
-    location.reload();
+function menuBack(){
+location.reload();
 }
-
-pokaz();
 
 </script>
 
