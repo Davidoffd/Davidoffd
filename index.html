@@ -1,49 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Moja strona</title>
+    <title>Testy</title>
     <style>
         body {
             font-family: Arial;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            color: white;
+            background: #f0f0f0;
             text-align: center;
-            margin-top: 100px;
         }
-        h1 {
-            font-size: 50px;
-        }
-        p {
-            font-size: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            border: none;
+
+        .box {
             background: white;
-            color: black;
-            font-size: 16px;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
             cursor: pointer;
-            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Moja strona 🚀</h1>
-    <p>Udało się! Strona działa w internecie 😎</p>
-<img src="https://picsum.photos/300" alt="losowy obrazek">
-    <button onclick="alert('Działa! 🔥')">
-        Kliknij mnie
-   <button onclick="zmienTekst()">
-    Kliknij mnie
-</button>
+<div class="box" id="menu">
+    <h1>Wybierz test</h1>
+    <button onclick="startTest(0)">Test 0</button>
+    <button onclick="startTest(1)">Test 1</button>
+    <button onclick="startTest(2)">Test 2</button>
+</div>
 
-<p id="tekst"></p>
+<div class="box" id="quiz" style="display:none;">
+    <h2 id="tytul"></h2>
+    <p id="pytanie"></p>
+    <div id="odpowiedzi"></div>
+    <button onclick="sprawdz()">Dalej</button>
+    <p id="wynik"></p>
+</div>
 
 <script>
-function zmienTekst() {
-    document.getElementById("tekst").innerHTML = "Kliknięto! 🔥";
+
+// 🔥 BAZA TESTÓW
+let testy = [
+    [
+        {
+            pytanie: "2 + 2 = ?",
+            odpowiedzi: ["3", "4", "5"],
+            poprawna: 1
+        },
+        {
+            pytanie: "3 + 3 = ?",
+            odpowiedzi: ["5", "6", "7"],
+            poprawna: 1
+        }
+    ],
+    [
+        {
+            pytanie: "Stolica Polski?",
+            odpowiedzi: ["Warszawa", "Berlin", "Paryż"],
+            poprawna: 0
+        }
+    ],
+    [
+        {
+            pytanie: "Kolor nieba?",
+            odpowiedzi: ["Zielony", "Niebieski", "Czerwony"],
+            poprawna: 1
+        }
+    ]
+];
+
+let aktualne = 0;
+let aktualnyTest = 0;
+let punkty = 0;
+
+function startTest(nr) {
+    aktualnyTest = nr;
+    aktualne = 0;
+    punkty = 0;
+
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+
+    document.getElementById("tytul").innerText = "Test " + nr;
+
+    pokazPytanie();
 }
+
+function pokazPytanie() {
+    let p = testy[aktualnyTest][aktualne];
+
+    document.getElementById("pytanie").innerText = p.pytanie;
+
+    let html = "";
+    p.odpowiedzi.forEach((odp, i) => {
+        html += `<label><input type="radio" name="odp" value="${i}"> ${odp}</label><br>`;
+    });
+
+    document.getElementById("odpowiedzi").innerHTML = html;
+}
+
+function sprawdz() {
+    let wybrana = document.querySelector('input[name="odp"]:checked');
+
+    if (!wybrana) {
+        alert("Wybierz odpowiedź!");
+        return;
+    }
+
+    let p = testy[aktualnyTest][aktualne];
+
+    if (parseInt(wybrana.value) === p.poprawna) {
+        punkty++;
+    }
+
+    aktualne++;
+
+    if (aktualne < testy[aktualnyTest].length) {
+        pokazPytanie();
+    } else {
+        document.getElementById("pytanie").innerText = "Koniec testu!";
+        document.getElementById("odpowiedzi").innerHTML = "";
+        document.getElementById("wynik").innerText = "Wynik: " + punkty;
+    }
+}
+
 </script>
 
 </body>
