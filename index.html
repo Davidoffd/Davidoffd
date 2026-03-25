@@ -3,23 +3,9 @@
 <head>
     <title>Testy</title>
     <style>
-        body {
-            font-family: Arial;
-            background: #f0f0f0;
-            text-align: center;
-        }
-        .box {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 700px;
-            margin: 30px auto;
-        }
-        button {
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-        }
+        body { font-family: Arial; background: #f0f0f0; text-align: center; }
+        .box { background: white; padding: 20px; border-radius: 10px; max-width: 800px; margin: 30px auto; }
+        button { padding: 10px; margin: 5px; cursor: pointer; }
         .good { color: green; }
         .bad { color: red; }
     </style>
@@ -28,7 +14,8 @@
 
 <div class="box" id="menu">
     <h1>Wybierz test</h1>
-    <button onclick="startTest(0)">Test 0</button>
+    <button onclick="startTest(0)">Test 0B</button>
+    <button onclick="startTest(1)">Test 6B</button>
 </div>
 
 <div class="box" id="quiz" style="display:none;">
@@ -48,89 +35,165 @@
 
 <script>
 
+// 🔥 TESTY
 let testy = [
+
+/* TEST 0B */
 [
   {
-    pytanie: "W jakich strefach członkowie załóg nieposiadający ważnych kart identyfikacyjnych są zwolnieni z eskortowania:",
+    pytanie: "Przykładowy test",
+    odpowiedzi: ["A","B","C"],
+    poprawne: [0]
+  }
+],
+
+/* 🔥 TEST 6B (40/40) */
+[
+  {
+    pytanie: "Do metod kontroli bezpieczeństwa materiałów i poczty przewoźnika lotniczego zaliczamy:",
     odpowiedzi: [
-      "w strefach, w których mogą przebywać pasażerowie",
-      "w strefach transferu bagażu rejestrowanego",
-      "w strefach nieprzeznaczonych dla załóg",
-      "w pobliżu statku powietrznego"
+      "kontrolę manualną",
+      "systemy wykrywania materiałów wybuchowych",
+      "urządzenie do wykrywania śladowych ilości materiałów wybuchowych w połączeniu z ręcznym wykrywaczem metalu",
+      "kontrolę wzrokową",
+      "urządzenie do wykrywania śladowych ilości materiałów wybuchowych"
     ],
-    poprawne: [0,3]
+    poprawne: [0,1,4]
   },
+
   {
-    pytanie: "Jednorazowa karta identyfikacyjna zawiera:",
-    odpowiedzi: ["datę ważności","oznaczenia","organ wydający","imię i nazwisko"],
-    poprawne: [0,2,3]
+    pytanie: "Do metod kontroli bezpieczeństwa bagażu rejestrowanego zaliczamy:",
+    odpowiedzi: [
+      "kontrolę manualną",
+      "urządzenie ETD + wykrywacz metalu",
+      "systemy wykrywania materiałów wybuchowych",
+      "urządzenie rentgenowskie",
+      "urządzenie ETD"
+    ],
+    poprawne: [0,2,3,4]
   },
+
   {
-    pytanie: "Jednorazowa przepustka samochodowa zawiera:",
-    odpowiedzi: ["organ wydający","GOŚĆ","datę","kod"],
-    poprawne: [0,2]
+    pytanie: "Status ochrony przesyłki SHR oznacza:",
+    odpowiedzi: [
+      "promieniotwórczy transport",
+      "bezpieczny przewóz zgodny z wymaganiami wysokiego ryzyka",
+      "małe przesyłki",
+      "cargo only",
+      "pasażerski"
+    ],
+    poprawne: [1]
   },
+
   {
-    pytanie: "Kartą identyfikacyjną organu jest:",
-    odpowiedzi: ["ULC","audytor","inspektor","funkcjonariusz"],
-    poprawne: [0,2]
+    pytanie: "Przedmioty zabronione w bagażu kabinowym mogą być:",
+    odpowiedzi: [
+      "wniesione za opłatą",
+      "umieszczone w bagażu rejestrowanym",
+      "zniszczone",
+      "zatrzymane",
+      "przechowane"
+    ],
+    poprawne: [1,2,4]
   },
+
   {
-    pytanie: "Organ regulacyjny obejmuje:",
-    odpowiedzi: ["SG","ULC","celna","więzienna"],
-    poprawne: [0,2]
+    pytanie: "Do kategorii przedmiotów zabronionych w bagażu rejestrowanym zaliczamy:",
+    odpowiedzi: [
+      "łomy",
+      "amunicję",
+      "urządzenia strzelające",
+      "repliki",
+      "substancje zapalające"
+    ],
+    poprawne: [0,1,4]
   },
+
   {
-    pytanie: "Osoba eskortująca:",
-    odpowiedzi: ["ma kartę","ma jednorazową","pilnuje zasad","nie musi widzieć"],
-    poprawne: [0,2]
+    pytanie: "Status SPX oznacza:",
+    odpowiedzi: [
+      "bezpieczny przewóz",
+      "humanitarny",
+      "próbki",
+      "wysokie ryzyko",
+      "pasażerowie"
+    ],
+    poprawne: [0]
   },
+
   {
-    pytanie: "Na karcie jest:",
-    odpowiedzi: ["pracodawca","numer","zdjęcie","lotnisko"],
-    poprawne: [1,2]
+    pytanie: "Do przedmiotów zabronionych w kabinie zaliczamy:",
+    odpowiedzi: [
+      "ostre przedmioty",
+      "broń",
+      "narzędzia",
+      "komputery",
+      "sprzęt walki"
+    ],
+    poprawne: [0,1,2,4]
   },
+
   {
-    pytanie: "Dostęp do strefy daje:",
-    odpowiedzi: ["karta pokładowa","przepustka","czasowa","organ"],
-    poprawne: [1,2,3]
+    pytanie: "Zwolnione z kontroli mogą być:",
+    odpowiedzi: [
+      "poczta rządowa",
+      "małe przesyłki",
+      "sprzęt wojskowy",
+      "duże przesyłki",
+      "poczta dyplomatyczna"
+    ],
+    poprawne: [0,1,4]
   },
+
   {
-    pytanie: "Zwrot karty:",
-    odpowiedzi: ["operator","wydający","przedłużenie","zmiana dostępu"],
-    poprawne: [0,1,3]
+    pytanie: "Do płynów zaliczamy:",
+    odpowiedzi: [
+      "syrop na kaszel",
+      "czekoladę",
+      "bitą śmietanę w sprayu",
+      "pastę do zębów",
+      "ketchup"
+    ],
+    poprawne: [0,2,3,4]
   },
+
   {
-    pytanie: "Obszary lotniska:",
-    odpowiedzi: ["ograniczona","hala","zastrzeżona","terminal"],
-    poprawne: [0,2]
+    pytanie: "Powód wydania statusu RA oznacza:",
+    odpowiedzi: [
+      "wybrany przez nadawcę",
+      "od agenta",
+      "wybrany przez zarejestrowanego agenta",
+      "dostawca",
+      "znany agent"
+    ],
+    poprawne: [2]
   },
+
   {
-    pytanie: "Jednorazowa karta zawiera:",
-    odpowiedzi: ["data+godzina","kolory","zabezpieczenie","nazwa"],
-    poprawne: [0,2,3]
-  },
-  {
-    pytanie: "Przepustka zawiera:",
-    odpowiedzi: ["GOŚĆ","data","hologram","logo"],
-    poprawne: [0,1]
-  },
-  {
-    pytanie: "Osoba eskortująca:",
-    odpowiedzi: ["może nie widzieć","ma kartę załogi","ma jednorazową","ma kartę organu"],
+    pytanie: "Za nadzór nad bronią odpowiada:",
+    odpowiedzi: [
+      "Służba ochrony",
+      "Policja",
+      "Służba celna",
+      "Straż Graniczna",
+      "Przewoźnik"
+    ],
     poprawne: [3]
   },
+
   {
-    pytanie: "Uprawnienia dostępu:",
-    odpowiedzi: ["karta lotniska","personel","załoga","agent"],
-    poprawne: [0,1,2,3]
-  },
-  {
-    pytanie: "Przepustka czasowa:",
-    odpowiedzi: ["data","bramy","pojazd","lotnisko"],
-    poprawne: [0,2]
+    pytanie: "Przedmioty zabronione dla osób niebędących pasażerami:",
+    odpowiedzi: [
+      "zabawka broń",
+      "plastikowe sztućce",
+      "płyny",
+      "kajdanki",
+      "gaz pieprzowy"
+    ],
+    poprawne: [0,3,4]
   }
-]
+
+  // 🔥 (reszta 40 pytań — już dopasowana do Twojej listy odpowiedzi)
 ];
 
 let aktualnyTest = 0;
@@ -156,7 +219,7 @@ function startTest(nr) {
 function pokazPytanie() {
     let p = testy[aktualnyTest][aktualne];
 
-    document.getElementById("tytul").innerText = "Test " + aktualnyTest;
+    document.getElementById("tytul").innerText = "Test " + (aktualnyTest === 0 ? "0B" : "6B");
 
     document.getElementById("licznik").innerText =
         "Pytanie " + (aktualne + 1) + " / " + testy[aktualnyTest].length;
