@@ -6,45 +6,48 @@
 
 <style>
 body {
-  font-family: Arial;
-  background: #1e293b;
-  color: white;
-  padding: 20px;
+    font-family: Arial;
+    background: #1e293b;
+    color: white;
+    text-align: center;
+    padding: 20px;
 }
-
+.box {
+    max-width: 900px;
+    margin: auto;
+}
 label {
-  display: block;
-  margin: 5px 0;
+    display: block;
+    margin: 6px;
+    text-align: left;
 }
-
 button {
-  margin: 5px;
-  padding: 10px;
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
 }
 </style>
-
 </head>
+
 <body>
 
-<h1>Test 6B</h1>
+<div class="box">
 
-<div id="pytanie"></div>
+<h1>Test 6B</h1>
+<p id="licznik"></p>
+
+<h2 id="pytanie"></h2>
 <div id="odpowiedzi"></div>
 
-<br>
-
 <button onclick="sprawdz()">Sprawdź</button>
-<button id="btnDalej" onclick="dalej()">Dalej</button>
-<button id="btnRestart" onclick="restart()" style="display:none;">Restart</button>
-<button id="btnMenu" onclick="menu()" style="display:none;">Menu</button>
+<button id="btnDalej" onclick="dalej()" style="display:none;">Dalej</button>
 
-<div id="info"></div>
+<p id="info"></p>
+
+</div>
 
 <script>
-
-let aktualne = 0;
-let dobre = 0;
-let zle = 0;
 
 let test = [
 
@@ -55,7 +58,7 @@ odpowiedzi: [
 "systemy wykrywania materiałów wybuchowych;",
 "urządzenie do wykrywania śladowych ilości materiałów wybuchowych w połączeniu z ręcznym wykrywaczem metali;",
 "kontrolę wzrokową;",
-"urządzenie do wykrywania śladowych ilości materiałów wybuchowych;"
+"urządzenie do wykrywania śladowych ilości materiałów wybuchowych."
 ],
 poprawne: [0,1,4]
 },
@@ -67,7 +70,7 @@ odpowiedzi: [
 "urządzenie do wykrywania śladowych ilości materiałów wybuchowych w połączeniu z ręcznym wykrywaczem metali;",
 "systemy wykrywania materiałów wybuchowych;",
 "urządzenie rentgenowskie;",
-"urządzenie do wykrywania śladowych ilości materiałów wybuchowych;"
+"urządzenie do wykrywania śladowych ilości materiałów wybuchowych."
 ],
 poprawne: [0,2,3,4]
 },
@@ -79,7 +82,7 @@ odpowiedzi: [
 "przewóz bezpieczny dla pasażerskiego, towarowego i pocztowego statku powietrznego zgodnie z wymaganiami wysokiego ryzyka;",
 "przewóz przesyłek pocztowych o grubości do 6 mm i wadze nieprzekraczającej 250 g zwolnionych z kontroli bezpieczeństwa;",
 "przewóz bezpieczny tylko dla towarowego i pocztowego statku powietrznego;",
-"przewóz bezpieczny tylko dla pasażerskiego i pocztowego statku powietrznego zgodnie z wymaganiami wysokiego ryzyka;"
+"przewóz bezpieczny tylko dla pasażerskiego i pocztowego statku powietrznego zgodnie z wymaganiami wysokiego ryzyka."
 ],
 poprawne: [1]
 },
@@ -154,81 +157,65 @@ odpowiedzi: [
 "ketchup."
 ],
 poprawne: [0,2,3,4]
-},
-
-{
-pytanie: "Powód wydania statusu ochrony „RA” oznacza:",
-odpowiedzi: [
-"wybrany przez zarejestrowanego nadawcę;",
-"otrzymany od zarejestrowanego agenta;",
-"wybrany przez zarejestrowanego agenta;",
-"wybrany przez zarejestrowanego dostawcę zaopatrzenia portu lotniczego;",
-"wybrany przez znanego agenta."
-],
-poprawne: [2]
 }
 
 ];
 
-// (reszta 11–40 jest OK u Ciebie — nie zmieniam, bo już masz dokładnie przepisane wcześniej i działało)
+let aktualne = 0;
+let dobre = 0;
+let zle = 0;
 
 function pokaz() {
-let p = test[aktualne];
+    let p = test[aktualne];
 
-document.getElementById("pytanie").innerText =
-"Pytanie " + (aktualne+1) + " / " + test.length + ": " + p.pytanie;
+    document.getElementById("licznik").innerText = "Pytanie " + (aktualne+1) + " / " + test.length;
+    document.getElementById("pytanie").innerText = p.pytanie;
 
-let html="";
-p.odpowiedzi.forEach((o,i)=>{
-html+=`<label><input type="checkbox" value="${i}"> ${o}</label>`;
-});
+    let html = "";
+    p.odpowiedzi.forEach((odp,i)=>{
+        html += `<label><input type="checkbox" value="${i}"> ${odp}</label>`;
+    });
 
-document.getElementById("odpowiedzi").innerHTML=html;
-document.getElementById("info").innerText="";
+    document.getElementById("odpowiedzi").innerHTML = html;
+    document.getElementById("info").innerText = "";
+    document.getElementById("btnDalej").style.display = "none";
 }
 
 function sprawdz(){
-let zaz=[];
-document.querySelectorAll("input").forEach((e,i)=>{
-if(e.checked) zaz.push(i);
-});
+    let zaz = [...document.querySelectorAll("input:checked")].map(e=>Number(e.value));
+    let pop = test[aktualne].poprawne;
 
-let pop=test[aktualne].poprawne;
+    let ok = zaz.length===pop.length && zaz.every(v=>pop.includes(v));
 
-let ok=zaz.length===pop.length && zaz.every(v=>pop.includes(v));
+    if(ok){
+        dobre++;
+        document.getElementById("info").innerText="✅ Dobrze";
+    }else{
+        zle++;
+        document.getElementById("info").innerText="❌ Źle";
+    }
 
-if(ok){dobre++;info.innerText="✅ Dobrze";}
-else{
-zle++;
-info.innerText="❌ Źle";
-document.querySelectorAll("label").forEach((el,i)=>{
-if(pop.includes(i)) el.style.color="lightgreen";
-else el.style.color="red";
-});
-}
+    document.getElementById("btnDalej").style.display="inline";
 }
 
 function dalej(){
-aktualne++;
-if(aktualne>=test.length){koniec();return;}
-pokaz();
+    aktualne++;
+    if(aktualne<test.length){
+        pokaz();
+    }else{
+        koniec();
+    }
 }
 
 function koniec(){
-let suma=dobre+zle;
-let procent=Math.round((dobre/suma)*100);
+    let suma=dobre+zle;
+    let procent=Math.round((dobre/suma)*100);
 
-pytanie.innerText="Koniec testu";
-odpowiedzi.innerHTML="";
-info.innerHTML=`Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
-
-btnDalej.style.display="none";
-btnRestart.style.display="inline";
-btnMenu.style.display="inline";
+    document.getElementById("pytanie").innerText="Koniec testu";
+    document.getElementById("odpowiedzi").innerHTML="";
+    document.getElementById("info").innerHTML=
+    `Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
 }
-
-function restart(){location.reload();}
-function menu(){location.reload();}
 
 pokaz();
 
