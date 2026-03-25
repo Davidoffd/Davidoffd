@@ -23,13 +23,8 @@
             cursor: pointer;
         }
 
-        .good {
-            color: green;
-        }
-
-        .bad {
-            color: red;
-        }
+        .good { color: green; }
+        .bad { color: red; }
     </style>
 </head>
 <body>
@@ -46,35 +41,34 @@
     <div id="odpowiedzi"></div>
 
     <button onclick="sprawdz()" id="btnSprawdz">Sprawdź</button>
-<button onclick="dalej()" id="btnDalej" style="display:none;">Dalej</button>
+    <button onclick="dalej()" id="btnDalej" style="display:none;">Dalej</button>
 
-<button onclick="restartTest()" id="btnRestart" style="display:none;">Jeszcze raz</button>
-<button onclick="powrotMenu()" id="btnMenu" style="display:none;">Menu</button>
+    <button onclick="restartTest()" id="btnRestart" style="display:none;">Jeszcze raz</button>
+    <button onclick="powrotMenu()" id="btnMenu" style="display:none;">Menu</button>
 
     <p id="info"></p>
 </div>
 
 <script>
 
-// 🔥 TESTY
 let testy = [
     [
         {
-            pytanie: "Które są liczbami parzystymi?",
+            pytanie: "Które są parzyste?",
             odpowiedzi: ["2", "3", "4", "5"],
-            poprawne: [0, 2]
+            poprawne: [0,2]
         },
         {
-            pytanie: "Które to kolory?",
+            pytanie: "Kolory:",
             odpowiedzi: ["Pies", "Czerwony", "Niebieski"],
-            poprawne: [1, 2]
+            poprawne: [1,2]
         }
     ],
     [
         {
-            pytanie: "Stolice państw:",
+            pytanie: "Stolice:",
             odpowiedzi: ["Warszawa", "Berlin", "Kot"],
-            poprawne: [0, 1]
+            poprawne: [0,1]
         }
     ]
 ];
@@ -92,9 +86,9 @@ function startTest(nr) {
 
     document.getElementById("menu").style.display = "none";
     document.getElementById("quiz").style.display = "block";
-    document.getElementById("tytul").innerText = "Test " + nr;
+
     document.getElementById("btnRestart").style.display = "none";
-document.getElementById("btnMenu").style.display = "none";
+    document.getElementById("btnMenu").style.display = "none";
 
     pokazPytanie();
 }
@@ -102,6 +96,7 @@ document.getElementById("btnMenu").style.display = "none";
 function pokazPytanie() {
     let p = testy[aktualnyTest][aktualne];
 
+    document.getElementById("tytul").innerText = "Test " + aktualnyTest;
     document.getElementById("pytanie").innerText = p.pytanie;
 
     let html = "";
@@ -125,21 +120,13 @@ function sprawdz() {
     let wybrane = [];
     zaznaczone.forEach(el => wybrane.push(parseInt(el.value)));
 
-    let poprawne = p.poprawne;
+    let dobrze = JSON.stringify(wybrane.sort()) === JSON.stringify(p.poprawne.sort());
 
-    let dobrze = JSON.stringify(wybrane.sort()) === JSON.stringify(poprawne.sort());
-
-    // kolorowanie
     p.odpowiedzi.forEach((_, i) => {
         let el = document.getElementById("odp" + i);
 
-        if (poprawne.includes(i)) {
-            el.classList.add("good");
-        }
-
-        if (wybrane.includes(i) && !poprawne.includes(i)) {
-            el.classList.add("bad");
-        }
+        if (p.poprawne.includes(i)) el.classList.add("good");
+        if (wybrane.includes(i) && !p.poprawne.includes(i)) el.classList.add("bad");
     });
 
     if (dobrze) {
@@ -169,6 +156,8 @@ function dalej() {
             `Dobre: ${dobre}<br>Złe: ${zle}<br>Wynik: ${procent}%`;
 
         document.getElementById("btnDalej").style.display = "none";
+        document.getElementById("btnRestart").style.display = "inline";
+        document.getElementById("btnMenu").style.display = "inline";
     }
 }
 
@@ -179,8 +168,9 @@ function restartTest() {
 function powrotMenu() {
     document.getElementById("quiz").style.display = "none";
     document.getElementById("menu").style.display = "block";
-    document.getElementById("btnDalej").style.display = "none";
 }
+
+</script>
 
 </body>
 </html>
