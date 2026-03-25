@@ -8,7 +8,6 @@
             background: #f0f0f0;
             text-align: center;
         }
-
         .box {
             background: white;
             padding: 20px;
@@ -16,13 +15,11 @@
             max-width: 700px;
             margin: 30px auto;
         }
-
         button {
             padding: 10px;
             margin: 5px;
             cursor: pointer;
         }
-
         .good { color: green; }
         .bad { color: red; }
     </style>
@@ -51,18 +48,87 @@
 
 <script>
 
-// 🔥 TWOJE PYTANIA (z generatora)
 let testy = [
 [
   {
-    "pytanie": "W jakich strefach członkowie załóg nieposiadający ważnych kart identyfikacyjnych są zwolnieni z eskortowania:",
-    "odpowiedzi": [
-      "w strefach, w których mogą przebywać pasażerowie;",
-      "w strefach, w których transferowany jest odlatujący bagaż rejestrowany;",
-      "w strefach nieprzeznaczonych dla załóg;",
-      "w strefach położonych w bezpośrednim sąsiedztwie statku powietrznego."
+    pytanie: "W jakich strefach członkowie załóg nieposiadający ważnych kart identyfikacyjnych są zwolnieni z eskortowania:",
+    odpowiedzi: [
+      "w strefach, w których mogą przebywać pasażerowie",
+      "w strefach transferu bagażu rejestrowanego",
+      "w strefach nieprzeznaczonych dla załóg",
+      "w pobliżu statku powietrznego"
     ],
-    "poprawne": [0,3]
+    poprawne: [0,3]
+  },
+  {
+    pytanie: "Jednorazowa karta identyfikacyjna zawiera:",
+    odpowiedzi: ["datę ważności","oznaczenia","organ wydający","imię i nazwisko"],
+    poprawne: [0,2,3]
+  },
+  {
+    pytanie: "Jednorazowa przepustka samochodowa zawiera:",
+    odpowiedzi: ["organ wydający","GOŚĆ","datę","kod"],
+    poprawne: [0,2]
+  },
+  {
+    pytanie: "Kartą identyfikacyjną organu jest:",
+    odpowiedzi: ["ULC","audytor","inspektor","funkcjonariusz"],
+    poprawne: [0,2]
+  },
+  {
+    pytanie: "Organ regulacyjny obejmuje:",
+    odpowiedzi: ["SG","ULC","celna","więzienna"],
+    poprawne: [0,2]
+  },
+  {
+    pytanie: "Osoba eskortująca:",
+    odpowiedzi: ["ma kartę","ma jednorazową","pilnuje zasad","nie musi widzieć"],
+    poprawne: [0,2]
+  },
+  {
+    pytanie: "Na karcie jest:",
+    odpowiedzi: ["pracodawca","numer","zdjęcie","lotnisko"],
+    poprawne: [1,2]
+  },
+  {
+    pytanie: "Dostęp do strefy daje:",
+    odpowiedzi: ["karta pokładowa","przepustka","czasowa","organ"],
+    poprawne: [1,2,3]
+  },
+  {
+    pytanie: "Zwrot karty:",
+    odpowiedzi: ["operator","wydający","przedłużenie","zmiana dostępu"],
+    poprawne: [0,1,3]
+  },
+  {
+    pytanie: "Obszary lotniska:",
+    odpowiedzi: ["ograniczona","hala","zastrzeżona","terminal"],
+    poprawne: [0,2]
+  },
+  {
+    pytanie: "Jednorazowa karta zawiera:",
+    odpowiedzi: ["data+godzina","kolory","zabezpieczenie","nazwa"],
+    poprawne: [0,2,3]
+  },
+  {
+    pytanie: "Przepustka zawiera:",
+    odpowiedzi: ["GOŚĆ","data","hologram","logo"],
+    poprawne: [0,1]
+  },
+  {
+    pytanie: "Osoba eskortująca:",
+    odpowiedzi: ["może nie widzieć","ma kartę załogi","ma jednorazową","ma kartę organu"],
+    poprawne: [3]
+  },
+  {
+    pytanie: "Uprawnienia dostępu:",
+    odpowiedzi: ["karta lotniska","personel","załoga","agent"],
+    poprawne: [0,1,2,3]
+  },
+  {
+    pytanie: "Przepustka czasowa:",
+    odpowiedzi: ["data","bramy","pojazd","lotnisko"],
+    poprawne: [0,2]
   }
 ]
 ];
