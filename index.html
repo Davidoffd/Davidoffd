@@ -191,16 +191,33 @@ function pokazPytanie() {
 }
 
 function sprawdz() {
-    let zaznaczone = [...document.querySelectorAll("input:checked")].map(e => parseInt(e.value));
-    let poprawne = test[aktualne].poprawne;
+  let zaznaczone = [];
+  document.querySelectorAll("input[type=checkbox]").forEach((el, i) => {
+    if (el.checked) zaznaczone.push(i);
+  });
 
-    let ok = zaznaczone.length === poprawne.length &&
-             zaznaczone.every(v => poprawne.includes(v));
+  let poprawneOdp = test[aktualne].poprawne;
 
-    if (ok) dobre++;
-    else zle++;
+  let dobrze =
+    zaznaczone.length === poprawneOdp.length &&
+    zaznaczone.every(v => poprawneOdp.includes(v));
 
-    document.getElementById("info").innerHTML = ok ? "✅ Dobrze" : "❌ Źle";
+  let info = document.getElementById("info");
+
+  if (dobrze) {
+    info.innerText = "✅ Dobrze";
+  } else {
+    info.innerText = "❌ Źle";
+
+    // 🔥 POKAŻ POPRAWNE ODPOWIEDZI
+    document.querySelectorAll("input[type=checkbox]").forEach((el, i) => {
+      if (poprawneOdp.includes(i)) {
+        el.parentElement.style.color = "lightgreen";
+      } else {
+        el.parentElement.style.color = "red";
+      }
+    });
+  }
 }
 
 function dalej() {
