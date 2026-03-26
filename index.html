@@ -36,7 +36,11 @@ button {
 
 <div class="box" id="menu">
 <h1>Testy</h1>
-<button onclick="start()">Start Test 6B</button>
+
+<button onclick="startTest(test1)">Test 6B</button>
+<button onclick="startTest(test2)">Egzamin końcowy - zestaw 3</button>
+<button onclick="startRandom()">Losowy test</button>
+
 </div>
 
 <div class="box" id="testBox" style="display:none;">
@@ -546,15 +550,45 @@ poprawne: [0,1]
 
 let aktualne=0, dobre=0, zle=0;
 
-function start(){
+let aktywnyTest = [];
+
+function startTest(t){
+aktywnyTest = [...t];
 menu.style.display="none";
 testBox.style.display="block";
+reset();
 pokaz();
 }
 
+function startRandom(){
+aktywnyTest = [...test1, ...test2]
+.sort(()=>Math.random()-0.5)
+.slice(0,40);
+
+menu.style.display="none";
+testBox.style.display="block";
+reset();
+pokaz();
+}
+function losowyZestaw3(){
+aktywnyTest = [...test2]
+.sort(()=>Math.random()-0.5)
+.slice(0,40);
+
+trybLosowy = true; 
+reset();
+pokaz();
+}
+
+function reset(){
+aktualne=0;
+dobre=0;
+zle=0;
+}
+
 function pokaz(){
-let p=test[aktualne];
-licznik.innerText="Pytanie "+(aktualne+1)+" / "+test.length;
+let p=aktywnyTest[aktualne];
+licznik.innerText="Pytanie "+(aktualne+1)+" / "+aktywnyTest.length;
 pytanie.innerText=p.pytanie;
 
 let html="";
