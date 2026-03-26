@@ -1068,11 +1068,17 @@ let aktualne=0, dobre=0, zle=0;
 let aktywnyTest = [];
 
 function startTest(t){
-aktywnyTest = [...t];
-menu.style.display="none";
-testBox.style.display="block";
-reset();
-pokaz();
+    aktywnyTest = [...t];
+
+    document.querySelector("#testBox h1").innerText =
+        (t === test1) 
+        ? "Test 6B" 
+        : "Pytania egzaminacyjne zestaw 3";
+
+    menu.style.display="none";
+    testBox.style.display="block";
+    reset();
+    pokaz();
 }
 
 function startRandom(){
