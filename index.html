@@ -1117,18 +1117,23 @@ info.innerText="";
 }
 
 function sprawdz(){
+
 let zaz=[...document.querySelectorAll("input:checked")].map(e=>+e.value);
 let pop=aktywnyTest[aktualne].poprawne;
 
+document.querySelectorAll("label").forEach(el=>{
+    el.classList.remove("correct","wrong");
+});
+
 document.querySelectorAll("label").forEach((el,i)=>{
-if(pop.includes(i)) el.classList.add("correct");
-else if(zaz.includes(i)) el.classList.add("wrong");
+    if(pop.includes(i)) el.classList.add("correct");
+    else if(zaz.includes(i)) el.classList.add("wrong");
 });
 
 if(zaz.length===pop.length && zaz.every(v=>pop.includes(v))){
-dobre++; info.innerText="✅";
+    dobre++; info.innerText="✅";
 }else{
-zle++; info.innerText="❌";
+    zle++; info.innerText="❌";
 }
 
 btnDalej.style.display="inline";
