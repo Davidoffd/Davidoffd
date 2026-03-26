@@ -603,7 +603,7 @@ info.innerText="";
 
 function sprawdz(){
 let zaz=[...document.querySelectorAll("input:checked")].map(e=>+e.value);
-let pop=test[aktualne].poprawne;
+let pop=aktywnyTest[aktualne].poprawne;
 
 document.querySelectorAll("label").forEach((el,i)=>{
 if(pop.includes(i)) el.classList.add("correct");
@@ -621,7 +621,7 @@ btnDalej.style.display="inline";
 
 function dalej(){
 aktualne++;
-if(aktualne<test.length) pokaz();
+if(aktualne<aktywnyTest.length) pokaz();
 else koniecTestu();
 }
 
