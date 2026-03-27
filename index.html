@@ -40,6 +40,7 @@ button {
 <button onclick="startTest(test1)">Test 6B</button>
 <button onclick="startTest(test2)">Egzamin końcowy - zestaw 3</button>
 <button onclick="startRandom()">Losowy test</button>
+<button onclick="startTest(testULC, 'Pytania ULC')">Pytania ULC</button>
 
 </div>
 
@@ -1061,19 +1062,21 @@ odpowiedzi: [
 ],
 poprawne: [3]
 }
-
+const testULC = [
+  {
+    pytanie: "Przykładowe pytanie ULC",
+    odpowiedzi: ["A", "B", "C", "D"],
+    poprawne: [1]
+  }
 ];
 let aktualne=0, dobre=0, zle=0;
 
 let aktywnyTest = [];
 
-function startTest(t){
+function startTest(t, nazwa){
     aktywnyTest = [...t];
 
-    document.querySelector("#testBox h1").innerText =
-        (t === test1) 
-        ? "Test 6B" 
-        : "Pytania egzaminacyjne zestaw 3";
+    document.querySelector("#testBox h1").innerText = nazwa;
 
     menu.style.display="none";
     testBox.style.display="block";
