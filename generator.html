@@ -14,21 +14,27 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: auto;
+}
+
+.question {
+    background: #334155;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
 }
 
 textarea, input {
     width: 100%;
     margin: 5px 0;
     padding: 8px;
-    font-size: 14px;
 }
 
 .answer {
     display: flex;
-    align-items: center;
     gap: 10px;
+    align-items: center;
 }
 
 button {
@@ -51,14 +57,12 @@ button {
 
 <div class="container">
 
-<h1>Generator pytań</h1>
+<h1>Generator wielu pytań</h1>
 
-<textarea id="pytanie" placeholder="Wpisz pytanie"></textarea>
+<div id="questions"></div>
 
-<div id="answers"></div>
-
-<button onclick="addAnswer()">➕ Dodaj odpowiedź</button>
-<button onclick="generate()">⚙️ Generuj kod</button>
+<button onclick="addQuestion()">➕ Dodaj pytanie</button>
+<button onclick="generate()">⚙️ Generuj cały kod</button>
 
 <div id="output"></div>
 
@@ -66,44 +70,61 @@ button {
 
 <script>
 
-let count = 0;
+function addQuestion(){
+    let div = document.createElement("div");
+    div.className = "question";
 
-function addAnswer(){
+    div.innerHTML = `
+        <textarea placeholder="Pytanie"></textarea>
+        <div class="answers"></div>
+        <button onclick="addAnswer(this)">➕ Odpowiedź</button>
+    `;
+
+    document.getElementById("questions").appendChild(div);
+}
+
+function addAnswer(btn){
+    let container = btn.parentElement.querySelector(".answers");
+
     let div = document.createElement("div");
     div.className = "answer";
 
     div.innerHTML = `
-        <input type="checkbox" title="Poprawna">
+        <input type="checkbox">
         <input type="text" placeholder="Odpowiedź">
     `;
 
-    document.getElementById("answers").appendChild(div);
-    count++;
+    container.appendChild(div);
 }
 
 function generate(){
-    let pytanie = document.getElementById("pytanie").value;
+    let result = "";
 
-    let odp = [];
-    let poprawne = [];
+    document.querySelectorAll(".question").forEach(q => {
 
-    document.querySelectorAll("#answers .answer").forEach((el, i)=>{
-        let text = el.children[1].value;
-        let checked = el.children[0].checked;
+        let pytanie = q.querySelector("textarea").value;
 
-        odp.push(`"${text}"`);
-        if(checked) poprawne.push(i);
-    });
+        let odp = [];
+        let poprawne = [];
 
-    let kod = `{
+        q.querySelectorAll(".answer").forEach((a, i)=>{
+            let text = a.children[1].value;
+            let checked = a.children[0].checked;
+
+            odp.push(`"${text}"`);
+            if(checked) poprawne.push(i);
+        });
+
+        result += `{
 pytanie: "${pytanie}",
 odpowiedzi: [
 ${odp.join(",\n")}
 ],
 poprawne: [${poprawne.join(",")}]
-},`;
+},\n\n`;
+    });
 
-    document.getElementById("output").innerText = kod;
+    document.getElementById("output").innerText = result;
 }
 
 </script>
