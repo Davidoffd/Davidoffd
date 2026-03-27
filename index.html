@@ -43,6 +43,25 @@ body {
     transform: scale(1.05);
 }
 
+/* submenu */
+.submenu {
+    display: none;
+    margin-top: 30px;
+}
+
+.submenu button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* powrót */
+.back {
+    margin-top: 20px;
+}
+
 /* stopka */
 .footer {
     position: fixed;
@@ -62,21 +81,53 @@ body {
 
 <div class="container">
 
-    <h1>Wybierz kategorię</h1>
+    <h1 id="title">Wybierz kategorię</h1>
 
-    <div class="grid">
-      <div class="tile" onclick="showMenu('testy')">Testy cząstkowe</div>
-<div class="tile" onclick="showMenu('egzamin')">Egzamin końcowy</div>
-<div class="tile" onclick="location.href='test.html#ulc'">Pytania ULC</div>
+    <!-- KAFELKI -->
+    <div id="mainMenu" class="grid">
+        <div class="tile" onclick="showMenu('testy')">Testy cząstkowe</div>
+        <div class="tile" onclick="showMenu('egzamin')">Egzamin końcowy</div>
+        <div class="tile" onclick="location.href='test.html#ulc'">Pytania ULC</div>
+    </div>
+
+    <!-- TESTY -->
+    <div id="testy" class="submenu">
+        <button onclick="location.href='test.html#test1'">Test 6B</button>
+        <button class="back" onclick="back()">⬅ Powrót</button>
+    </div>
+
+    <!-- EGZAMIN -->
+    <div id="egzamin" class="submenu">
+        <button onclick="location.href='test.html#egzamin'">Egzamin końcowy - zestaw 3</button>
+        <button onclick="location.href='test.html#random'">Losowy test</button>
+        <button class="back" onclick="back()">⬅ Powrót</button>
     </div>
 
 </div>
 
+<!-- STOPKA -->
 <div class="footer">
     <a href="https://zrzutka.pl/" target="_blank">
         Wspieraj projekt – zrzutka
     </a>
 </div>
+
+<script>
+function showMenu(menu){
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById("title").innerText = "Wybierz test";
+    document.getElementById(menu).style.display = "block";
+}
+
+function back(){
+    document.getElementById("mainMenu").style.display = "grid";
+    document.getElementById("title").innerText = "Wybierz kategorię";
+
+    document.querySelectorAll(".submenu").forEach(el=>{
+        el.style.display = "none";
+    });
+}
+</script>
 
 </body>
 </html>
