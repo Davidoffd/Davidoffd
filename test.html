@@ -1116,6 +1116,19 @@ function startRandom(){
     reset();
     pokaz();
 }
+    function startULCRandom(){
+    aktywnyTest = [...testULC]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 40);
+
+    document.querySelector("#testBox h1").innerText = "Losowe pytania ULC";
+
+    menu.style.display = "none";
+    testBox.style.display = "block";
+
+    reset();
+    pokaz();
+}
 
 function reset(){
     aktualne=0;
