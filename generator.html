@@ -1,1 +1,112 @@
-4ed6554689dc44e7df0ab1650836024cb7f997dd
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Generator pytań</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #1e293b;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+textarea, input {
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.answer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#output {
+    background: #0f172a;
+    padding: 15px;
+    margin-top: 20px;
+    text-align: left;
+    white-space: pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Generator pytań</h1>
+
+<textarea id="pytanie" placeholder="Wpisz pytanie"></textarea>
+
+<div id="answers"></div>
+
+<button onclick="addAnswer()">➕ Dodaj odpowiedź</button>
+<button onclick="generate()">⚙️ Generuj kod</button>
+
+<div id="output"></div>
+
+</div>
+
+<script>
+
+let count = 0;
+
+function addAnswer(){
+    let div = document.createElement("div");
+    div.className = "answer";
+
+    div.innerHTML = `
+        <input type="checkbox" title="Poprawna">
+        <input type="text" placeholder="Odpowiedź">
+    `;
+
+    document.getElementById("answers").appendChild(div);
+    count++;
+}
+
+function generate(){
+    let pytanie = document.getElementById("pytanie").value;
+
+    let odp = [];
+    let poprawne = [];
+
+    document.querySelectorAll("#answers .answer").forEach((el, i)=>{
+        let text = el.children[1].value;
+        let checked = el.children[0].checked;
+
+        odp.push(`"${text}"`);
+        if(checked) poprawne.push(i);
+    });
+
+    let kod = `{
+pytanie: "${pytanie}",
+odpowiedzi: [
+${odp.join(",\n")}
+],
+poprawne: [${poprawne.join(",")}]
+},`;
+
+    document.getElementById("output").innerText = kod;
+}
+
+</script>
+
+</body>
+</html>
