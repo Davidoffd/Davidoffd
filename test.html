@@ -1185,15 +1185,19 @@ wynik.innerHTML=`Wynik: ${procent}%<br>Dobre: ${dobre}<br>Złe: ${zle}`;
 function menuBack(){
 location.reload();
 }
-if(location.hash === "#test1"){
-    startTest(test1, "Test 6B");
-}
-else if(location.hash === "#egzamin"){
-    startTest(test2, "Egzamin końcowy - zestaw 3");
-}
-else if(location.hash === "#ulc"){
-    startTest(testULC, "Pytania ULC");
-}
+window.onload = function(){
+
+    if(location.hash === "#test1"){
+        startTest(test1, "Test 6B");
+    }
+    else if(location.hash === "#egzamin"){
+        startTest(test2, "Egzamin końcowy - zestaw 3");
+    }
+    else if(location.hash === "#ulc"){
+        startTest(testULC, "Pytania ULC");
+    }
+
+};
 </script>
 
 </body>
