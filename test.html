@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Test 6B</title>
+<title>Testy</title>
 
 <style>
 body {
@@ -37,15 +37,15 @@ button {
 <div class="box" id="menu">
 <h1>Testy</h1>
 
-<button onclick="startTest(test1)">Test 6B</button>
-<button onclick="startTest(test2)">Egzamin końcowy - zestaw 3</button>
+<button onclick="startTest(test1, 'Test 6B')">Test 6B</button>
+<button onclick="startTest(test2, 'Egzamin końcowy - zestaw 3')">Egzamin końcowy - zestaw 3</button>
 <button onclick="startRandom()">Losowy test</button>
 <button onclick="startTest(testULC, 'Pytania ULC')">Pytania ULC</button>
 
 </div>
 
 <div class="box" id="testBox" style="display:none;">
-<h1>Test 6B</h1>
+<h1></h1>
 <p id="licznik"></p>
 
 <h2 id="pytanie"></h2>
@@ -1089,7 +1089,6 @@ const testULC = [
   }
 ];
 let aktualne=0, dobre=0, zle=0;
-
 let aktywnyTest = [];
 
 function startTest(t, nazwa){
@@ -1099,95 +1098,110 @@ function startTest(t, nazwa){
 
     menu.style.display="none";
     testBox.style.display="block";
+
     reset();
     pokaz();
 }
 
 function startRandom(){
-aktywnyTest = [...test2]
-.sort(()=>Math.random()-0.5)
-.slice(0,40);
+    aktywnyTest = [...test2]
+    .sort(()=>Math.random()-0.5)
+    .slice(0,40);
 
-menu.style.display="none";
-testBox.style.display="block";
-reset();
-pokaz();
-}
-function losowyZestaw3(){
-aktywnyTest = [...test2]
-.sort(()=>Math.random()-0.5)
-.slice(0,40);
+    document.querySelector("#testBox h1").innerText = "Losowy test";
 
-trybLosowy = true; 
-reset();
-pokaz();
+    menu.style.display="none";
+    testBox.style.display="block";
+
+    reset();
+    pokaz();
 }
 
 function reset(){
-aktualne=0;
-dobre=0;
-zle=0;
+    aktualne=0;
+    dobre=0;
+    zle=0;
 }
 
 function pokaz(){
-let p=aktywnyTest[aktualne];
-licznik.innerText="Pytanie "+(aktualne+1)+" / "+aktywnyTest.length;
-pytanie.innerText=p.pytanie;
+    let p=aktywnyTest[aktualne];
 
-let html="";
-p.odpowiedzi.forEach((o,i)=>{
-html+=`<label id="l${i}"><input type="checkbox" value="${i}"> ${o}</label>`;
-});
-odpowiedzi.innerHTML=html;
+    licznik.innerText="Pytanie "+(aktualne+1)+" / "+aktywnyTest.length;
+    pytanie.innerText=p.pytanie;
 
-btnDalej.style.display="none";
-info.innerText="";
+    let html="";
+    p.odpowiedzi.forEach((o,i)=>{
+        html+=`<label id="l${i}"><input type="checkbox" value="${i}"> ${o}</label>`;
+    });
+
+    odpowiedzi.innerHTML=html;
+    btnDalej.style.display="none";
+    info.innerText="";
 }
 
 function sprawdz(){
 
-let zaz=[...document.querySelectorAll("input:checked")].map(e=>+e.value);
-let pop=aktywnyTest[aktualne].poprawne;
+    let zaz=[...document.querySelectorAll("input:checked")].map(e=>+e.value);
+    let pop=aktywnyTest[aktualne].poprawne;
 
-document.querySelectorAll("label").forEach(el=>{
-    el.classList.remove("correct","wrong");
-});
+    document.querySelectorAll("label").forEach(el=>{
+        el.classList.remove("correct","wrong");
+    });
 
-document.querySelectorAll("label").forEach((el,i)=>{
-    if(pop.includes(i)) el.classList.add("correct");
-    else if(zaz.includes(i)) el.classList.add("wrong");
-});
+    document.querySelectorAll("label").forEach((el,i)=>{
+        if(pop.includes(i)) el.classList.add("correct");
+        else if(zaz.includes(i)) el.classList.add("wrong");
+    });
 
-if(zaz.length===pop.length && zaz.every(v=>pop.includes(v))){
-    dobre++; info.innerText="✅";
-}else{
-    zle++; info.innerText="❌";
-}
+    if(zaz.length===pop.length && zaz.every(v=>pop.includes(v))){
+        dobre++; info.innerText="✅";
+    }else{
+        zle++; info.innerText="❌";
+    }
 
-btnDalej.style.display="inline";
+    btnDalej.style.display="inline";
 }
 
 function dalej(){
-aktualne++;
-if(aktualne<aktywnyTest.length) pokaz();
-else koniecTestu();
+    aktualne++;
+    if(aktualne<aktywnyTest.length) pokaz();
+    else koniecTestu();
 }
 
 function koniecTestu(){
-testBox.style.display="none";
-koniec.style.display="block";
+    testBox.style.display="none";
+    koniec.style.display="block";
 
-let suma=dobre+zle;
-let procent=Math.round((dobre/suma)*100);
-wynik.innerHTML=`Wynik: ${procent}%<br>Dobre: ${dobre}<br>Złe: ${zle}`;
+    let suma=dobre+zle;
+    let procent=Math.round((dobre/suma)*100);
+
+    wynik.innerHTML=`Wynik: ${procent}%<br>Dobre: ${dobre}<br>Złe: ${zle}`;
 }
 
 function menuBack(){
-location.reload();
+    location.href = "index.html";
 }
+    window.onload = function(){
+
+    if(location.hash === "#test1"){
+        startTest(test1, "Test 6B");
+    }
+
+    else if(location.hash === "#egzamin"){
+        startTest(test2, "Egzamin końcowy - zestaw 3");
+    }
+
+    else if(location.hash === "#random"){
+        startRandom();
+    }
+
+    else if(location.hash === "#ulc"){
+        startTest(testULC, "Pytania ULC");
+    }
 
 };
-</script>
+
+    </script>
 
 </body>
 </html>
