@@ -72,7 +72,7 @@ button {
 
 <script>
 
-let test1 = [
+let test6 = [
 
 {
 pytanie: "Do metod kontroli bezpieczeństwa materiałów i poczty przewoźnika lotniczego, które będą załadowane do jakiejkolwiek części pasażerskiego statku powietrznego innej niż luk bagażowy, zaliczamy:",
@@ -555,7 +555,7 @@ poprawne: [0,1]
 }
 
 ];
-let test2 = [
+let egzamin = [
 
 {
 pytanie: "Poczta i materiały przewoźnika lotniczego, które będą załadowane do luku bagażowego statku powietrznego poddawane są kontroli bezpieczeństwa z wykorzystaniem następujących metod:",
@@ -3014,11 +3014,11 @@ function menuBack(){
     window.onload = function(){
 
     if(location.hash === "#test1"){
-        startTest(test1, "Test 6B");
+        startTest(test6, "Test 6");
     }
 
     else if(location.hash === "#egzamin"){
-        startTest(test2, "Egzamin końcowy - zestaw 3");
+        startTest(egzamin, 'Egzamin końcowy - zestaw 3');
     }
 
     else if(location.hash === "#random"){
