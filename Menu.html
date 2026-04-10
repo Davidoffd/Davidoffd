@@ -87,7 +87,7 @@ body {
     <div id="mainMenu" class="grid">
         <div class="tile" onclick="showMenu('testy')">Testy cząstkowe</div>
         <div class="tile" onclick="showMenu('egzamin')">Egzamin końcowy</div>
-        <div class="tile" onclick="startULC()">Pytania ULC</div>
+        <div class="tile" onclick="showMenu('ulc')">Pytania ULC</div>
     </div>
 
     <!-- TESTY -->
@@ -102,6 +102,11 @@ body {
         <button onclick="location.href='index.html#losowy'">Losowy test</button>
         <button class="back" onclick="back()">⬅ Powrót</button>
     </div>
+    <div id="ulc" class="submenu">
+    <button onclick="location.href='index.html#ulc'">Pytania ULC</button>
+    <button onclick="location.href='index.html#ulc-random'">Losowe pytania ULC</button>
+    <button class="back" onclick="back()">⬅ Powrót</button>
+</div>
 
 </div>
 
@@ -128,9 +133,6 @@ function back(){
     });
 }
 
-function startULC(){
-    location.href = "index.html";
-}
 </script>
 
 </body>
