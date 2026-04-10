@@ -3011,26 +3011,30 @@ function koniecTestu(){
 function menuBack(){
     location.href = "index.html";
 }
-    window.onload = function(){
+    window.onload = function () {
+    const hash = location.hash;
 
-    if(location.hash === "#test1"){
-        startTest(test6, "Test 6");
+    const testMap = {
+        "#test0": [test0, "Test 0"],
+        "#test1": [test1, "Test 1"],
+        "#test2": [test2, "Test 2"],
+        "#test3": [test3, "Test 3"],
+        "#test4": [test4, "Test 4"],
+        "#test5": [test5, "Test 5"],
+        "#test6": [test6, "Test 6B"],
+        "#egzamin": [egzamin, "Egzamin końcowy - zestaw 3"],
+        "#ulc": [testULC, "Pytania ULC"]
+    };
+
+    if (testMap[hash]) {
+        startTest(testMap[hash][0], testMap[hash][1]);
     }
-
-    else if(location.hash === "#egzamin"){
-        startTest(egzamin, 'Egzamin końcowy - zestaw 3');
-    }
-
-    else if(location.hash === "#random"){
+    else if (hash === "#random") {
         startRandom();
     }
-
-    else if(location.hash === "#ulc"){
-        startTest(testULC, "Pytania ULC");
+    else if (hash === "#ulc-random") {
+        startULCRandom();
     }
-else if(location.hash === "#ulc-random"){
-    startULCRandom();
-}
 };
 
     </script>
